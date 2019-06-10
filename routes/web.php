@@ -11,15 +11,23 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::middleware ('auth')->group (function () {
-});
-Route::resource('image', 'ImageController');
-Route::get('/{imagesSection}/{imagesProject}', 'ImageController@index');
-
 Auth::routes();
+// Route::get('logout', 'Auth\LoginController@logout', function () {
+//     return abort(404);
+// });
+Route::get('/', 'homeController@index');
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Admin menu
+Route::middleware('auth')->group(function () {
+    // dd($_REQUEST);
+    Route::resource('image', 'ImageController');
+});
+
+// Static menu
+Route::get('contact', 'homeController@contact')->name('contact');
+Route::get('about-me', 'homeController@aboutMe');
+Route::get('in-progress', 'homeController@inProgress');
+
+// Dynamic menu
+Route::get('{imagesSection}/{imagesProject}', 'ImageController@index');
+

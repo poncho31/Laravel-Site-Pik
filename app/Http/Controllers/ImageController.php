@@ -26,10 +26,10 @@ class ImageController extends Controller
      */
     public function index(Request $request, $imagesSection, $imagesProject) 
     {
-        // dd($imagesSection);
+        $postCategory = $request->post('category');
+        $category = isset($postCategory)?$postCategory:null;
 
-        $images = $this->imageRepo->getPaginate(6, $imagesSection);
-        // dd($images);
+        $images = $this->imageRepo->getPaginate(8, $imagesSection, $imagesProject, $category);
         if($request->ajax()){
             // dd($request);
             return ['images'=>view('images.ajaxLoad')->with(compact('images', 'imagesSection', 'imagesProject'))->render(),
@@ -61,8 +61,7 @@ class ImageController extends Controller
         $request->validate([
 
             'image' => 'required',
-            // 'image.*' => 'mimes:jpg,png,jpeg',
-            'category_id' => 'required|exists:categories,id',
+            'image.*' => 'mimes:jpg,png,jpeg',
             'description' => 'nullable|string|max:255',
         ]);
         $this->imageRepo->store($request);

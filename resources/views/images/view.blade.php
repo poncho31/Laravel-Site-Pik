@@ -157,15 +157,21 @@
         width: 100%;
     }
     }
+    .navbar{
+        margin: 0;
+    }
+    .title h2{
+        text-align: center;
+    }
 </style>
 @endsection
 
 @section('content')
+<div class="jumbotron title">
+        <h2 class="display-4">{{ ucfirst(trans($imagesSection)) }} &#8212; {{ ucfirst(trans($imagesProject)) }}</h2>
+        {{-- <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>  --}}
+</div>
 <div class="container">
-    <div class="jumbotron title">
-            <h1 class="display-4">{{ ucfirst(trans($imagesSection)) }} - {{ ucfirst(trans($imagesProject)) }}</h1>
-            <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p> 
-    </div>
 
     <div class="category">
         <ul id="bar">
