@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class category extends Model
 {
-    protected $fillable =  ['name', 'project', 'section'];
+    protected $fillable =  ['name'];
 
     public function getAll()
     {
@@ -17,10 +17,6 @@ class category extends Model
     public function find($id){
         return static::find($id);
     }
-
-    // public function findBy($value){
-    //     return DB::table("categories")->where($secCatPro);
-    // }
 
     public function images()
     {

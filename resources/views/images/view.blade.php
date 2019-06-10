@@ -168,16 +168,17 @@
 
 @section('content')
 <div class="jumbotron title">
-        <h2 class="display-4">{{ ucfirst(trans($imagesSection)) }} &#8212; {{ ucfirst(trans($imagesProject)) }}</h2>
+        <h2 class="display-4">{{ ucfirst(trans($imageSection)) }} &#8212; {{ ucfirst(trans($imageProject)) }}</h2>
         {{-- <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>  --}}
 </div>
 <div class="container">
 
     <div class="category">
         <ul id="bar">
-            <button class="btn btn-primary" category="*">ALL</button>
-            <button class="btn btn-primary" category="abstract">Abstract</button>
-            <button class="btn btn-primary" category="space">Space</button>
+            <button class="btn btn-primary btn-category" selected='selected' value=''>ALL</button>
+            @foreach($categories as $category)
+                <button class="btn btn-primary btn-category" selected='' value="{{$category->name}}">{{$category->name}}</button>
+            @endforeach
         </ul>
     </div>
 
@@ -192,7 +193,8 @@
                             data-srcset = "{{  url('/thumbs/' .$image->name) }}" >
                     <img class="lazyload blur-up image" 
                          src="{{  url('/thumbs/' .$image->name) }}" 
-                         data-src="{{  url('/images/' .$image->name) }}" >
+                         data-src="{{  url('/images/' .$image->name) }}"
+                         id="{{ $image->id}}" >
                 </picture>
             {{-- </a> --}}
         @endforeach
@@ -218,9 +220,22 @@
 
     $(function() {
         $(window).scroll(fetchImage);
-        
+        var category = "";
+        $('.btn-category').on('click', function(){
+            category = $(this).val();
+            var selected = $(this).attr('selected');
+            $('.btn-category').removeAttr('selected');
+            $(this).attr('selected', 'selected');
+            var page = $('.endless-pagination').data('next-page') + "?category="+category;
+            $.get(page, function(data){
+                $('.images').html(data.images);
+                $('.endless-pagination').data('next-page',  data['next-page']);
+            })
+        });
+
         function fetchImage(){
-            var page = $('.endless-pagination').data('next-page');
+            var page = $('.endless-pagination').data('next-page') + "?category="+category;
+            console.log(page);
             if(page !== null){
                 clearTimeout($.data(this, 'scrollCheck'));
                 $.data(this, 'scrollCheck', setTimeout(function(){

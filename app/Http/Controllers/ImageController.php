@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Repositories\ImageRepository;
 use App\category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Repositories\ImageRepository;
 
 class ImageController extends Controller
 {
@@ -24,19 +25,20 @@ class ImageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $imagesSection, $imagesProject) 
+    public function index(Request $request, $imageSection, $imageProject) 
     {
-        $postCategory = $request->post('category');
-        $category = isset($postCategory)?$postCategory:null;
-
-        $images = $this->imageRepo->getPaginate(8, $imagesSection, $imagesProject, $category);
+        
+        $imageCategory = ($request->get('category') != null)?$request->get('category'):null;
+        $images = $this->imageRepo->getPaginate(8, $imageSection, $imageProject, $imageCategory);
+        dd($images);
+        $categories = $this->imageRepo->getCategoriesByProject($imageProject);
         if($request->ajax()){
-            // dd($request);
-            return ['images'=>view('images.ajaxLoad')->with(compact('images', 'imagesSection', 'imagesProject'))->render(),
+            return ['images'=>view('images.ajaxLoad')->with(compact('images', 'imageSection', 'imageProject'))->render(),
             "next-page"=>$images->nextPageUrl()
             ];
         }
-        return view('images.view', compact('images', 'imagesSection', 'imagesProject'));
+        // die();
+        return view('images.view', compact('images', 'imageSection', 'imageProject', 'categories'));
     }
 
     /**
@@ -46,8 +48,10 @@ class ImageController extends Controller
      */
     public function create()
     {
-        $categories = category::all();
-        return view('images.create', compact('categories'));
+        $sections = DB::table('sections')->select('id','name')->groupBy('name')->get();
+        $projects = DB::table('projects')->select('id','name')->groupBy('name')->get();
+        $categories = DB::table('categories')->select('id','name')->groupBy('name')->get();
+        return view('images.create', compact('categories', 'projects', 'sections'));
     }
 
     /**
@@ -59,11 +63,12 @@ class ImageController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-
+            
             'image' => 'required',
             'image.*' => 'mimes:jpg,png,jpeg',
             'description' => 'nullable|string|max:255',
-        ]);
+            ]);
+        // dd($request);
         $this->imageRepo->store($request);
         return back()->with('ok', __("L'image a bien été enregistrée"));
     }

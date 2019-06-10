@@ -5,35 +5,57 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as InterventionImage;
 use App\category;
 use Illuminate\Support\Facades\DB;
+use App\project;
+use App\section;
 
 class ImageRepository
 {
     protected $image;
     protected $category;
-    public function __construct(Image $image, category $category){
+    protected $section;
+    protected $project;
+    public function __construct(Image $image, section $section, project $project){
         $this->image = $image;
-        $this->category = $category;
+        $this->section = $section;
+        $this->project = $project;
     }
 
     public function store($request)
     {
-        $section = $this->ifElse($request->post('category_section'), $request->post('category_section_new'));
-        $project = $this->ifElse($request->post('category_project'), $request->post('category_project_new'));
-        $category = $this->ifElse($request->post('category_name'),  $request->post('category_name_new'));
+        $section = $this->ifElse($request->post('section'), $request->post('section_new'));
+        $project = $this->ifElse($request->post('project'), $request->post('project_new'));
+        $category = $this->ifElse($request->post('category'), $request->post('category_new'));
 
-        if ($section != $project || $section != $category || $project != $category) {
-            // ajout dans la table categorie si id des 3 ne sont pas les mêmes
-            $this->category = new category();
-            $this->category->name = is_numeric($category)?$this->category->find($category):$category;
-            $this->category->project = is_numeric($project)? $this->project->find($project):$project;
-            $this->category->section = is_numeric($section)?$this->section->find($section):$section;
+        
+        if ($request->post('section_new') != null) {
+            $this->section = new section;
+            $this->section->name = $section;
+            $this->section->save();
+            $section = $this->section->id;
+        }
+        if ($request->post('project_new') != null) {
+            $this->project = new project;
+            $this->project->name = $project;
+            $this->project->save();
+            $project = $this->project->id;
+        }
+        if ($request->post('category_new') != null) {
+            $this->category =  new category;
+            $this->category->name = $category;
             $this->category->save();
             $category = $this->category->id;
         }
-        foreach ($request->file('image') as $imageFile) {
 
+
+        $sectionName = DB::table('sections')->where('id', $section)->pluck('name')->first();
+        $projectName = DB::table('projects')->where('id', $project)->pluck('name')->first();
+        $categoryName = DB::table('categories')->where('id', $category)->pluck('name')->first();
+
+        // dd($section, $project, $category);
+        // dd("section".intval($section), "project".intval($project),"category". intval($category));
+        foreach ($request->file('image') as $imageFile) {
             // Save image
-            $path = Storage::disk('images')->put("/$section/$project/$category", $imageFile);
+            $path = Storage::disk('images')->put("/$sectionName/$projectName", $imageFile);
             // Save thumb
             $image = InterventionImage::make($imageFile)->widen(500);
             Storage::disk('thumbs')->put($path, $image->encode());
@@ -41,6 +63,8 @@ class ImageRepository
             $this->image = new Image();
             $this->image->description = $request->description;
             $this->image->category_id = $category;
+            $this->image->project_id = intval($project);
+            $this->image->section_id = intval($section);
             $this->image->name = $path;
             $this->image->user_id = auth()->id();
             $this->image->save();
@@ -49,7 +73,7 @@ class ImageRepository
     }
 
     private function ifElse($if, $else){
-        return $if == NULL ? ($else == null ? null : $else) :$if;
+        return $if == null ? ($else == null ? null : $else) :$if;
     }
 
     public function getAll(){
@@ -57,17 +81,30 @@ class ImageRepository
     }
 
     public function getPaginate($nbPerPage, $section, $project, $category){
-        $filteredImages =  DB::table('images')
-                ->join('categories', 'images.category_id', '=', 'categories.id')
-                ->select('categories.section as categoryName', 'images.*')
-                ->where("categories.section",$section)
-                ->where("categories.project",$project);
-        if (!empty($category)) {
+        $filteredImages =  DB::table('images');
+        if ($category!=null) {
+            $filteredImages->join('categories', 'images.category_id', '=', 'categories.id');
+        }
+        $filteredImages->join('projects', 'images.project_id', '=', 'projects.id')
+                ->join('sections', 'images.section_id', '=', 'sections.id')
+                ->select('projects.name','sections.name', 'images.*')
+                ->where("sections.name","=",$section)
+                ->where("projects.name","=",$project);
+        if ($category != null) {
             $filteredImages->where("categories.name",$category);
         }
-
         return $filteredImages->orderBy('images.id', 'DESC')
                 ->paginate($nbPerPage);
+    }
+
+    public function getCategoriesByProject($project){
+        return DB::table('categories')
+                                      ->join('images','categories.id','=','images.category_id')
+                                      ->join('projects','images.project_id','=','projects.id')
+                                      ->select('categories.id', 'categories.name')
+                                      ->where('projects.name', '=', $project)
+                                      ->groupBy('categories.name')
+                                      ->get();
     }
 
     public function getByCategory($cat){
@@ -75,4 +112,16 @@ class ImageRepository
                             ->orderBy('updated_at')
                             ->get();
     }
+
+            /**
+             * Set the value of insertCroject
+             *
+             * @return  self
+             */ 
+            public function setInsertCroject($insertCroject)
+            {
+                        $this->insertCroject = $insertCroject;
+
+                        return $this;
+            }
 }

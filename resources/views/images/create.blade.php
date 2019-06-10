@@ -9,36 +9,37 @@
                     <div class="row{{ $errors->has('image') ? ' is-invalid' : '' }}">        
                         {{-- SECTION --}}
                         <div class="col-md-4 col-sm-4 col-xs-6">
-                            <label for="category_section">@lang('Section')</label>
-                            <select id="category_section" name="category_section" class="form-control">
+                            <label for="section">@lang('Section')</label>
+                            <select id="section" name="section" class="form-control">
                                 <option value=""></option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->section }}</option>
+                                @foreach($sections as $section)
+                                    {{ $section->id }}-{{ $section->name }}
+                                    <option value="{{ $section->id }}">{{ $section->name }}</option>
                                 @endforeach
                             </select>
-                            <input type="text" name="category_section_new" id="category_section_new" class="form-control" placeholder="new section">
+                            <input type="text" name="section_new" id="section_new" class="form-control" placeholder="new section">
                         </div>
                         {{-- PROJECT --}}
                         <div class="col-md-4 col-sm-4 col-xs-6">
-                            <label for="category_project">@lang('Project')</label>
-                            <select id="category_project" name="category_project" class="form-control">
+                            <label for="project">@lang('Project')</label>
+                            <select id="project" name="project" class="form-control">
                                 <option value=""></option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->project }}</option>
+                                @foreach($projects as $project)
+                                    <option value="{{ $project->id }}">{{ $project->name }}</option>
                                 @endforeach
                             </select>
-                            <input type="text" name="category_project_new" id="category_project_new" class="form-control"  placeholder="new project">
+                            <input type="text" name="project_new" id="project_new" class="form-control"  placeholder="new project">
                         </div>
                         {{-- CATEGORY --}}
                         <div class="col-md-4 col-sm-4 col-xs-6">
-                            <label for="category_name">@lang('Category')</label>
-                            <select id="category_name" name="category_name" class="form-control">
+                            <label for="category">@lang('Category')</label>
+                            <select id="category" name="category" class="form-control">
                                 <option value=""></option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
-                            <input type="text" name="category_name_new" id="category_name_new" class="form-control"  placeholder="new category">
+                            <input type="text" name="category_new" id="category_new" class="form-control"  placeholder="new category">
                         </div>
                     </div><br><br>
 
