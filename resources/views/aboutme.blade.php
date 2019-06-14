@@ -7,7 +7,11 @@
         .title h2{
             text-align: center;
         }
-
+        .jumbotron{
+            text-align: center;
+            background: rgba(55,56,45,0.3);
+            color: white;
+        }
     </style>
 @endsection
 
@@ -15,7 +19,8 @@
     <div class="jumbotron title">
             <h2 class="display-4">About me</h2>
     </div>
-    <div class="container">
+    <div class="container" style="text-align:center">
+            <iframe src="{{  url('/images/cv.pdf') }}" width="80%" style="height:200vh"></iframe>
     </div>
 @endsection
 

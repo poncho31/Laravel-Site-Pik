@@ -49,7 +49,6 @@ class ImageRepository
 
         $sectionName = DB::table('sections')->where('id', $section)->pluck('name')->first();
         $projectName = DB::table('projects')->where('id', $project)->pluck('name')->first();
-        $categoryName = DB::table('categories')->where('id', $category)->pluck('name')->first();
 
         // dd($section, $project, $category);
         // dd("section".intval($section), "project".intval($project),"category". intval($category));
@@ -80,48 +79,64 @@ class ImageRepository
         return $this->image->getAll();
     }
 
-    public function getPaginate($nbPerPage, $section, $project, $category){
-        $filteredImages =  DB::table('images');
-        if ($category!=null) {
-            $filteredImages->join('categories', 'images.category_id', '=', 'categories.id');
-        }
-        $filteredImages->join('projects', 'images.project_id', '=', 'projects.id')
-                ->join('sections', 'images.section_id', '=', 'sections.id')
-                ->select('projects.name','sections.name', 'images.*')
+    public function getPaginate($nbPerPage, $section, $project){
+        // dd($section);
+        return  $this->getImages()
                 ->where("sections.name","=",$section)
-                ->where("projects.name","=",$project);
-        if ($category != null) {
-            $filteredImages->where("categories.name",$category);
-        }
-        return $filteredImages->orderBy('images.id', 'DESC')
+                ->where("projects.name","=",$project)
+                ->orderBy('images.updated_at', 'DESC')
                 ->paginate($nbPerPage);
     }
 
+    private function getImages(){
+        return DB::table('images')
+                ->join('projects', 'images.project_id', '=', 'projects.id')
+                ->join('sections', 'images.section_id', '=', 'sections.id')
+                ->join('categories', 'images.category_id', '=', 'categories.id')
+                ->select('images.name','images.*', 'categories.name as categoryName', 'projects.name as projectName', 'sections.name as sectionName');
+    }
+
+    public function getHomeLatest($type){
+        $images = $this->getImages();
+        if ($type == 'collection') {
+            $images->orderBy('sections.updated_at', 'DESC')
+                   ->take(4);
+        }
+        else{
+            $images->orderBy('projects.updated_at', 'DESC')
+                   ->take(4);
+        }
+        // $images->select('images.*');
+        return $images->get();
+    }
     public function getCategoriesByProject($project){
         return DB::table('categories')
-                                      ->join('images','categories.id','=','images.category_id')
-                                      ->join('projects','images.project_id','=','projects.id')
-                                      ->select('categories.id', 'categories.name')
-                                      ->where('projects.name', '=', $project)
-                                      ->groupBy('categories.name')
-                                      ->get();
+                    ->join('images','categories.id','=','images.category_id')
+                    ->join('projects','images.project_id','=','projects.id')
+                    ->select('categories.id', 'categories.name')
+                    ->where('projects.name', '=', $project)
+                    ->groupBy('categories.name')
+                    ->get();
     }
 
-    public function getByCategory($cat){
-        return $this->image::where('category', $cat)
-                            ->orderBy('updated_at')
-                            ->get();
+    public static function getRoutes(){
+        // section/projet
+        $data = DB::table('images')
+                ->join('projects', 'images.project_id', '=', 'projects.id')
+                ->join('sections', 'images.section_id', '=', 'sections.id')
+                ->select('projects.name as projectName', 'sections.name as sectionName')
+                ->distinct('sections.name', 'projects.name')
+                ->get();
+        $menu = [];
+        foreach ($data as $val) {
+            $menu[$val->sectionName][] = $val->projectName;
+        }
+        return $menu;
+        // dd($data);
+        // dd($menu);
+                // SELECT DISTINCT s.name as sectionName, GROUP_CONCAT(DISTINCT p.name SEPARATOR '/') as projectName FROM images i
+                // INNER JOIN sections s ON s.id = i.section_id
+                // INNER JOIN projects p ON p.id = i.project_id
+                // GROUP BY sectionName
     }
-
-            /**
-             * Set the value of insertCroject
-             *
-             * @return  self
-             */ 
-            public function setInsertCroject($insertCroject)
-            {
-                        $this->insertCroject = $insertCroject;
-
-                        return $this;
-            }
 }

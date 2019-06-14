@@ -28,22 +28,24 @@
                 color: white;
                 position: relative;
                 top: 80px;
+                
             }
 
 			/* // text-shadow: 3px 3px 5px black;
 			// position: fixed; */
 			.header-title h1{
 				text-shadow: 1px 2px 2px black;
-				font-size: 4em;
+				font-size: 5em;
 				-webkit-animation-name: titleH1Anim;
 			    -webkit-animation-duration: 1s;
 			    -webkit-animation-timing-function: ease;
 			    -webkit-animation-iteration-count: 1;
+                font-family: "Raleway", sans-serif;
 			}
 			.header-title h2{
 				text-shadow: 1px 1px 1px black;
-				text-indent: 5%;
-				color: black;
+				text-indent: 10%;
+				color: #7F0000;
 				-webkit-animation-name: titleH2Anim;
 			    -webkit-animation-duration: 1s;
 			    -webkit-animation-timing-function: ease;
@@ -96,7 +98,13 @@
             border-color: transparent;
         }
 
-
+        .panel-heading h3{
+            text-shadow: 2px 2px 2px gray, 1px 1px 1px black;
+            color: whitesmoke;
+        }
+        .panel-heading{
+            background: whitesmoke;
+        }
     </style>
 @endsection
 @section('content')
@@ -112,38 +120,28 @@
     <div class="panel panel-default">
         
             <div class="panel-heading"><h3>Last projects</h3></div>
-            
-            <div class="row">
-                <div class="col-md-3 col-sm-4">
-                    <h4 class="image-title">Titre 2</h4>
-                    <img src="{{ asset('images/accessories.jpg') }}" alt="" width="100%">
+                <div class="row">
+                    @foreach($lastCollection as $collection)
+                        <div class="col-md-3 col-sm-3 col-xs-4">
+                            <h4 class="image-title">Titre 2</h4>
+                            <a href="{{ url("$collection->sectionName/$collection->projectName") }}">
+                                <img src="{{ asset('images/'.$collection->name) }}" alt="" width="100%">
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="col-md-3 col-sm-4">
-                    <h4 class="image-title">Titre 2</h4>
-                    <img src="{{ asset('images/accessories.jpg') }}" alt="" width="100%">
-                </div>
-                <div class="col-md-3 col-sm-4">
-                        <h4 class="image-title">Titre 2</h4>
-                        <img src="{{ asset('images/accessories.jpg') }}" alt="" width="100%">
-                    </div>
-            </div><br>
             
             <div class="panel-heading"><h3>Last Collection</h3></div>
-            
-            <div class="row">
-                <div class="col-md-3 col-sm-4">
-                    <h4 class="image-title">Titre 2</h4>
-                    <img src="{{ asset('images/womenswear.jpg') }}" alt="" width="100%">
+                <div class="row">
+                    @foreach($lastProject as $project)
+                            <div class="col-md-3 col-sm-3 col-xs-4">
+                                <h4 class="image-title">Titre 2</h4>
+                                <a href="{{ url("$project->sectionName/$project->projectName") }}">
+                                    <img src="{{ asset('images/'.$project->name) }}" alt="" width="100%">
+                                </a>
+                            </div>
+                    @endforeach
                 </div>
-                <div class="col-md-3 col-sm-4">
-                    <h4 class="image-title">Titre 2</h4>
-                    <img src="{{ asset('images/womenswear.jpg') }}" alt="" width="100%">
-                </div>
-                <div class="col-md-3 col-sm-4">
-                        <h4 class="image-title">Titre 2</h4>
-                        <img src="{{ asset('images/womenswear.jpg') }}" alt="" width="100%">
-                    </div>
-            </div><br>
 
             <div class="panel-heading"><h3>Latest news on Instagram</h3></div>
             

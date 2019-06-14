@@ -1,5 +1,6 @@
 @extends('layouts.app')
-
+@auth @php $admin = "admin" @endphp @endauth
+@guest @php $admin = "" @endphp @endguest
 @section('stylesheet')
 <style>
     #gallery {
@@ -163,6 +164,11 @@
     .title h2{
         text-align: center;
     }
+    .jumbotron{
+        text-align: center;
+        background: rgba(55,56,45,0.3);
+        color: white;
+    }
 </style>
 @endsection
 
@@ -175,9 +181,9 @@
 
     <div class="category">
         <ul id="bar">
-            <button class="btn btn-primary btn-category" selected='selected' value=''>ALL</button>
+            <button class="btn btn-primary btn-category" value='all'>ALL</button>
             @foreach($categories as $category)
-                <button class="btn btn-primary btn-category" selected='' value="{{$category->name}}">{{$category->name}}</button>
+                <button class="btn btn-primary btn-category"  value="{{$category->name}}">{{$category->name}}</button>
             @endforeach
         </ul>
     </div>
@@ -191,10 +197,11 @@
                             data-srcset="{{  url('/images/' .$image->name) }}">
                     <source media = "(max-width:420px)"
                             data-srcset = "{{  url('/thumbs/' .$image->name) }}" >
-                    <img class="lazyload blur-up image" 
+                    <img class="lazyload blur-up image {{ $admin }}" 
                          src="{{  url('/thumbs/' .$image->name) }}" 
                          data-src="{{  url('/images/' .$image->name) }}"
-                         id="{{ $image->id}}" >
+                         id="{{ $image->id}}"
+                         data-category="{{ $image->categoryName }}">
                 </picture>
             {{-- </a> --}}
         @endforeach
@@ -220,27 +227,30 @@
 
     $(function() {
         $(window).scroll(fetchImage);
-        var category = "";
         $('.btn-category').on('click', function(){
-            category = $(this).val();
-            var selected = $(this).attr('selected');
-            $('.btn-category').removeAttr('selected');
-            $(this).attr('selected', 'selected');
-            var page = $('.endless-pagination').data('next-page') + "?category="+category;
-            $.get(page, function(data){
-                $('.images').html(data.images);
-                $('.endless-pagination').data('next-page',  data['next-page']);
-            })
+            let category = $(this).val();
+            
+            $('.image').each(function(i, v){
+                let imgCategory = $(this).data('category');
+                if(category == 'all'){
+                    $('.image').css('display', 'block');
+                }
+                else if(category != imgCategory){
+                    $(this).css('display', 'none');
+                }
+                else{
+                    $(this).css('display', 'block');
+                }
+            });
         });
 
         function fetchImage(){
-            var page = $('.endless-pagination').data('next-page') + "?category="+category;
-            console.log(page);
+            var page = $('.endless-pagination').data('next-page');
             if(page !== null){
                 clearTimeout($.data(this, 'scrollCheck'));
                 $.data(this, 'scrollCheck', setTimeout(function(){
                     var scrollPositionForImageLoad = $(window).height() + $(window).scrollTop() + 100;
-                    if(scrollPositionForImageLoad >= $(document).height()){
+                    if(scrollPositionForImageLoad >= $(document).height() && page != ""){
                         $.get(page, function(data){
                             $('.images').append(data.images);
                             $('.endless-pagination').data('next-page',  data['next-page']);
@@ -259,13 +269,12 @@
         $('.close').on('click', function(){
             $('#myModal').css('display', 'none');
         });
-        // $('html').on('click', function(){
-        //     console.log($(this));
 
-        //     if(!($(this).hasClass('lazyload'))){
-        //         $('#myModal').css('display', 'none');
-        //     }
-        // });
+
+        $('body').on('click','.admin', function() {
+            var val = $(this).attr('id');
+            alert(val);
+        })
     });
 
 

@@ -28,16 +28,14 @@ class ImageController extends Controller
     public function index(Request $request, $imageSection, $imageProject) 
     {
         
-        $imageCategory = ($request->get('category') != null)?$request->get('category'):null;
-        $images = $this->imageRepo->getPaginate(8, $imageSection, $imageProject, $imageCategory);
-        dd($images);
+        $images = $this->imageRepo->getPaginate(8, $imageSection, $imageProject);
         $categories = $this->imageRepo->getCategoriesByProject($imageProject);
         if($request->ajax()){
             return ['images'=>view('images.ajaxLoad')->with(compact('images', 'imageSection', 'imageProject'))->render(),
             "next-page"=>$images->nextPageUrl()
             ];
         }
-        // die();
+        // dd($images);
         return view('images.view', compact('images', 'imageSection', 'imageProject', 'categories'));
     }
 

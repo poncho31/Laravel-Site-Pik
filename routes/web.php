@@ -11,23 +11,28 @@
 |
 */
 
-Auth::routes();
 // Route::get('logout', 'Auth\LoginController@logout', function () {
 //     return abort(404);
 // });
-Route::get('/', 'homeController@index');
 
-// Admin menu
-Route::middleware('auth')->group(function () {
-    // dd($_REQUEST);
-    Route::resource('image', 'ImageController');
-});
 
-// Static menu
-Route::get('contact', 'homeController@contact')->name('contact');
-Route::get('about-me', 'homeController@aboutMe');
-Route::get('in-progress', 'homeController@inProgress');
-
-// Dynamic menu
-Route::get('{imagesSection}/{imagesProject}', 'ImageController@index');
+    Auth::routes();
+    Route::get('/', 'homeController@index');
+    
+    // Admin menu
+    Route::middleware('auth')->group(function () {
+        // dd($_REQUEST);
+        Route::resource('image', 'ImageController');
+    });
+    
+    // Static menu
+    Route::get('contact', 'ContactController@index')->name('contact');
+    Route::post('contact', 'ContactController@store')->name('contact');
+    
+    Route::get('about-me', 'homeController@aboutMe');
+    
+    Route::resource('in-progress', 'InprogressController');
+    
+    // Dynamic menu
+    Route::get('{imagesSection}/{imagesProject}', 'ImageController@index');
 

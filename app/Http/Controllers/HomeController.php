@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Repositories\ImageRepository;
 
 class HomeController extends Controller
 {
+    protected $imageRepo;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ImageRepository $imageRepo)
     {
-        // $this->middleware('auth');
+        $this->imageRepo = $imageRepo;
     }
 
     /**
@@ -23,20 +26,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
-    }
-
-    public function contact()
-    {
-        return view('contact');
+        $lastProject = $this->imageRepo->getHomeLatest('project');
+        $lastCollection = $this->imageRepo->getHomeLatest('collection');
+        return view('home', compact('lastProject', 'lastCollection'));
     }
 
     public function aboutMe()
     {
         return view('aboutme');
     }
-    public function inProgress()
-    {
-        return view('inprogress');
-    }
+
 }

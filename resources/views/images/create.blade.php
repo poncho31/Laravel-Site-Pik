@@ -3,7 +3,10 @@
         @slot('title')
             @lang('Ajouter une image')
         @endslot
-        <div class="container mt-5">
+<div class="jumbotron title">
+        <h2 class="display-4">Ajouter des images par section / projet / catégorie</h2>
+</div>
+        <div class="container">
                 <form method="POST" action="{{ route('image.store') }}" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="row{{ $errors->has('image') ? ' is-invalid' : '' }}">        

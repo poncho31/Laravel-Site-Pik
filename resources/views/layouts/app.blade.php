@@ -77,18 +77,8 @@
             color: #b3b3b3;
             font-size: 11px;
         }
-        .jumbotron{
-            background: url('images/background.jpg');
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: 100;
-            -webkit-animation-name: backgrAnim;
-            -webkit-animation-duration: 1s;
-            -webkit-animation-timing-function: ease;
-            -webkit-animation-iteration-count: 1;
-        }
 
-        body{
+        body, .jumbotron{
             background: url('images/background.jpg');
             background-attachment: fixed;
             background-size: cover;
@@ -97,11 +87,21 @@
             -webkit-animation-duration: 1s;
             -webkit-animation-timing-function: ease;
             -webkit-animation-iteration-count: 1;
+            /* padding-top:0px;
+            margin-top: 0px; */
+        }
+        .admin:hover{
+            border: solid 5px red;
+            cursor: pointer;
         }
     </style>
     @yield('stylesheet');
 </head>
 <body>
+
+    @auth @php $admin = "admin" @endphp @endauth
+    @guest @php $admin = "" @endphp @endguest
+
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container-fluid">
@@ -126,42 +126,34 @@
                     <ul class="nav navbar-nav">
                         &nbsp;
                     </ul>
-                    {{-- Left Side of Navbar --}}
+                    {{-- Left Side of Navbar STATIC MENU--}}
                     <ul class="nav navbar-nav navbar-left">
                         <li class="nav-item"><a class="nav-link" href="{{ url("in-progress") }}">In progress</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url("contact") }}">Contact</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url("about-me") }}">About me</a></li>
                     </ul>
-                    <!-- Right Side Of Navbar -->
+                    <!-- Right Side Of Navbar DYNAMIC MENU-->
                     <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Womenswear</span> <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="{{ url("womenswear/berlin's wall") }}">Berlin's wall</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Shoes</span> <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="{{ url("shoes/vulgar") }}">Vulgar</a></li>
-                                </ul>
-                            </li>
 
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Accessories</span> <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="{{ url("accessories/accessories project") }}">Accessories project</a></li>
-                                </ul>
-                            </li>
+                            @foreach($menu as $section => $v)
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">{{ ucfirst(trans($section)) }}</span> <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        @foreach($v as $project)
+                                            <li class="nav-item"><a class="nav-link" href="{{ url("$section/$project") }}">{{ ucfirst(trans($project)) }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @endforeach
                             
                         <!-- Authentication Links -->
-                        @guest
-                        @else
+                        @auth
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}</span> <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ route('login') }}">Login</a></li>
-                                    <li class="nav-item{{ route('image.create') }}"><a class="nav-link" href="{{ route('image.create') }}">@lang('Ajouter une image')</a></li>
+                                    <li class="nav-item{{ route('image.create') }}"><a class="nav-link" href="{{ route('image.create') }}">@lang('Ajouter des images')</a></li>
+                                    <li class="nav-item{{ route('in-progress.create') }}"><a class="nav-link" href="{{ route('in-progress.create') }}">@lang('Ajouter un article')</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('logout') }}"
@@ -174,16 +166,19 @@
                                     </li>
                                 </ul>
                             </li>
-                        @endguest
+                        @endauth
                         
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="fixedNavbar" style="height:50px;"></div>
+        
+        @if(Session::has('message'))
+            <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+        @endif
 
         @yield('content')
-
         <footer>
             <div class="footerLinks">
                 <ul>
