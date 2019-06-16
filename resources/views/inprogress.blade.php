@@ -10,9 +10,9 @@
         text-align: center;
     }
     .jumbotron{
-        text-align: center;
-        background: rgba(55,132,45,0.3);
+        background: rgba(127,0,0,0.5);
         color: white;
+        text-align: center;
     }
     .image-title{
         font-weight: bold;
@@ -53,8 +53,30 @@
 @section('script')
     <script>
         $('body').on('click','.admin', function() {
-            var val = $(this).attr('id');
-            alert(val);
+            if (confirm('Are you sure you want to delete this article ?')) {
+                var id = $(this).attr('id');
+                $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                });
+                $.ajax({
+                    type: 'DELETE',
+                    url: "http://localhost:8000/in-progress/"+id
+                })
+                .done(function(e){
+                    var httpStatus = e.code ==200 ? true : false;
+                    if(httpStatus){
+                        location.reload();
+                    }
+                    else{
+                        alert(e['message']);
+                    }
+                })
+                .fail(function(e){
+                    alert(e);
+                })
+            }
         })
     </script>
 @endsection

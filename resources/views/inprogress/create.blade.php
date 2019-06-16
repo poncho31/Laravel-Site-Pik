@@ -8,16 +8,16 @@
             text-align: center;
         }
         .jumbotron{
-            text-align: center;
-            background: rgba(155,56,30,0.3);
+            background: rgba(0,127,0,0.7);
             color: white;
+            text-align: center;
         }
     </style>
 @endsection
 
 @section('content')
     <div class="jumbotron title">
-            <h2 class="display-4">Add article</h2>
+            <h2 class="display-4">Ajouter un article</h2>
     </div>
     <div class="container" style="text-align:center">
             <form method="POST" action="{{ route('in-progress.store') }}" enctype="multipart/form-data">

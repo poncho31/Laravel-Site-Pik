@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class InprogressController extends Controller
 {
+    protected $article;
+    public function __construct(article $article)
+    {
+        $this->article = $article;
+    }
     public function index()
     {
         $articles = DB::table('articles')->orderBy('updated_at', 'DESC')->paginate(12);
@@ -40,9 +45,20 @@ class InprogressController extends Controller
         return $this->index();
     }
 
-    public function delete()
+    /**
+     * Delete the specified article.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
-        return view('inprogress');
+        try {
+            $this->article->findOrFail($id)->delete();
+            return response()->json(['code'=> 200,'message' => 'Record has been deleted successfully!']);
+        } catch (\PDOException $e) {
+            return response()->json(['code'=> 500,'message' => 'Error : ' . $e->message]);
+        }
     }
 
 }

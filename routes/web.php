@@ -11,28 +11,25 @@
 |
 */
 
-// Route::get('logout', 'Auth\LoginController@logout', function () {
-//     return abort(404);
-// });
-
-
+    Route::get('logout', 'Auth\LoginController@logout', function () {return abort(404);});
     Auth::routes();
-    Route::get('/', 'homeController@index');
-    
     // Admin menu
     Route::middleware('auth')->group(function () {
-        // dd($_REQUEST);
         Route::resource('image', 'ImageController');
+        Route::resource('in-progress', 'InprogressController');
+        Route::get('delete', 'ImageController@globalDeleteView')->name('delete');
+        Route::post('delete', 'ImageController@globalDelete')->name('delete');
     });
     
+    Route::get('/', 'homeController@index');
     // Static menu
+    Route::get('in-progress', 'InprogressController@index');
     Route::get('contact', 'ContactController@index')->name('contact');
     Route::post('contact', 'ContactController@store')->name('contact');
-    
     Route::get('about-me', 'homeController@aboutMe');
-    
-    Route::resource('in-progress', 'InprogressController');
     
     // Dynamic menu
     Route::get('{imagesSection}/{imagesProject}', 'ImageController@index');
 
+
+    

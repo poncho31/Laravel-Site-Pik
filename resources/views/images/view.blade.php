@@ -165,9 +165,9 @@
         text-align: center;
     }
     .jumbotron{
-        text-align: center;
-        background: rgba(55,56,45,0.3);
+        background: rgba(127,0,0,0.5);
         color: white;
+        text-align: center;
     }
 </style>
 @endsection
@@ -190,8 +190,6 @@
 
     <div id="gallery" class="images endless-pagination" data-next-page="{{ $images->nextPageUrl() }}">
         @foreach($images as $image)
-            {{-- <img category="" class="" src="{{  url('/thumbs/' .$image->name) }}" alt="{{ $image->name }}" > --}}
-            {{-- <a href="{{  url('/images/' .$image->name) }}"> --}}
                 <picture>
                     <source media = "(min-width:420px)"
                             data-srcset="{{  url('/images/' .$image->name) }}">
@@ -203,7 +201,6 @@
                          id="{{ $image->id}}"
                          data-category="{{ $image->categoryName }}">
                 </picture>
-            {{-- </a> --}}
         @endforeach
     </div>
 </div>
@@ -262,7 +259,7 @@
 
         // modal image
         $('body').on('click','.image', function(){
-            $('#myModal').css('display', 'block');
+            $('#myModal').css('display', 'block').css('z-index', 100);
             $('#img01').attr('src', $(this).attr('src'));
             $('#caption').html($(this).attr('alt'));
         });
@@ -272,8 +269,31 @@
 
 
         $('body').on('click','.admin', function() {
-            var val = $(this).attr('id');
-            alert(val);
+            var id = $(this).attr('id');
+            // window.location ="localhost:8000/image/"+id;
+            if(confirm('Are you sure you want delete this image ?')){
+                $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                });
+                $.ajax({
+                    type: 'DELETE',
+                    url: "http://localhost:8000/image/"+id
+                })
+                .done(function(e){
+                    var httpStatus = e.code ==200 ? true : false;
+                    if(httpStatus){
+                        location.reload();
+                    }
+                    else{
+                        alert(e['message']);
+                    }
+                })
+                .fail(function(e){
+                    alert(e);
+                })
+            }
         })
     });
 

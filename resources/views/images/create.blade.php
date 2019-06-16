@@ -1,4 +1,13 @@
 @extends('layouts.app')
+@section('stylesheet')
+    <style>
+        .jumbotron{
+            background: rgba(0,127,0,0.7);
+            color: white;
+            text-align: center;
+        }
+    </style>
+@endsection
     @section('content')
         @slot('title')
             @lang('Ajouter une image')

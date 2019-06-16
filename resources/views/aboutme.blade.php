@@ -8,9 +8,9 @@
             text-align: center;
         }
         .jumbotron{
-            text-align: center;
-            background: rgba(55,56,45,0.3);
+            background: rgba(127,0,0,0.5);
             color: white;
+            text-align: center;
         }
     </style>
 @endsection

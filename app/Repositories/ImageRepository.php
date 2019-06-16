@@ -1,12 +1,13 @@
 <?php
 namespace App\Repositories;
-use App\Image;
+
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as InterventionImage;
-use App\category;
 use Illuminate\Support\Facades\DB;
-use App\project;
+use App\Image;
 use App\section;
+use App\project;
+use App\category;
 
 class ImageRepository
 {
@@ -50,8 +51,6 @@ class ImageRepository
         $sectionName = DB::table('sections')->where('id', $section)->pluck('name')->first();
         $projectName = DB::table('projects')->where('id', $project)->pluck('name')->first();
 
-        // dd($section, $project, $category);
-        // dd("section".intval($section), "project".intval($project),"category". intval($category));
         foreach ($request->file('image') as $imageFile) {
             // Save image
             $path = Storage::disk('images')->put("/$sectionName/$projectName", $imageFile);
@@ -80,7 +79,6 @@ class ImageRepository
     }
 
     public function getPaginate($nbPerPage, $section, $project){
-        // dd($section);
         return  $this->getImages()
                 ->where("sections.name","=",$section)
                 ->where("projects.name","=",$project)
@@ -92,22 +90,32 @@ class ImageRepository
         return DB::table('images')
                 ->join('projects', 'images.project_id', '=', 'projects.id')
                 ->join('sections', 'images.section_id', '=', 'sections.id')
-                ->join('categories', 'images.category_id', '=', 'categories.id')
+                ->leftJoin('categories', 'images.category_id', '=', 'categories.id')
                 ->select('images.name','images.*', 'categories.name as categoryName', 'projects.name as projectName', 'sections.name as sectionName');
     }
 
-    public function getHomeLatest($type){
+    public function getHomeLatest($type, $nb){
         $images = $this->getImages();
         if ($type == 'collection') {
             $images->orderBy('sections.updated_at', 'DESC')
-                   ->take(4);
+                   ->take($nb);
         }
         else{
             $images->orderBy('projects.updated_at', 'DESC')
-                   ->take(4);
+                   ->take($nb);
         }
-        // $images->select('images.*');
         return $images->get();
+    }
+
+    public function getInstagramPosts($nb){
+        $access_token="3190094976.1677ed0.093161ccf1974ae692d20f23a82e2135";
+        $json_link="https://api.instagram.com/v1/users/self/media/recent/?";
+        $json_link.="access_token={$access_token}&count={$nb}";
+        $json = file_get_contents($json_link);
+        $obj = json_decode($json, true, 512, JSON_BIGINT_AS_STRING);
+        $json = file_get_contents($json_link);
+        $obj = json_decode(preg_replace('/("\w+"):(\d+)/', '\\1:"\\2"', $json), true);
+        return $obj['data'];
     }
     public function getCategoriesByProject($project){
         return DB::table('categories')
@@ -139,4 +147,48 @@ class ImageRepository
                 // INNER JOIN projects p ON p.id = i.project_id
                 // GROUP BY sectionName
     }
+
+    // public function globalDelete(Request $request){
+    //     $section = $request->post('section');
+    //     $project = $request->post('project');
+    //     $category = $request->post('category');
+    //     if ($section != null){
+    //         $this->deleteSection($section);
+    //     }
+    //     if($project != null){
+    //         $this->deleteProject($project);
+    //     }
+    //     if($category != null){
+    //         $this->deleteCategory($category);
+    //     }
+    // }
+
+    public function delete($id){
+        $this->image->findOrFail($id)->delete();
+        // delete image too
+    }
+
+    public function deleteSection($section){
+        $sectionRepo = new section();
+        $sectionRepo->findOrFail($section)->delete();
+        // delete image too
+    }
+
+    public function deleteProject($project){
+        $projectRepo = new project();
+        $projectRepo->findOrFail($project)->delete();
+        // delete image too
+    }
+
+    public function deleteCategory($category){
+        $categoryRepo = new category();
+        $categoryRepo->findOrFail($category)->delete();
+        // delete image too
+    }
+
+    public function deleteAll(){
+        
+        // $categoryRepo->findOrFail($id)->delete();
+    }
+
 }

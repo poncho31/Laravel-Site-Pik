@@ -7,6 +7,8 @@
 
 import 'jquery';
 import './bootstrap';
+import 'unitegallery/dist/js/unitegallery';
+// import 'unitegallery';
 
 $(document).ready(function() {
     $.ajaxSetup({
@@ -14,4 +16,5 @@ $(document).ready(function() {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       });
+     
 })

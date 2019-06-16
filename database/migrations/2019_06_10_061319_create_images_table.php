@@ -23,22 +23,22 @@ class CreateImagesTable extends Migration
             $table->foreign('section_id')
                   ->references('id')
                   ->on('sections')
-                  ->onDelete('restrict')
-                  ->onUpdate('restrict');
+                  ->onDelete('cascade')
+                  ->onUpdate('cascade');
 
             $table->integer('project_id')->unsigned();
             $table->foreign('project_id')
                   ->references('id')
                   ->on('projects')
-                  ->onDelete('restrict')
-                  ->onUpdate('restrict');
+                  ->onDelete('cascade')
+                  ->onUpdate('cascade');
 
             $table->integer('category_id')->nullable()->unsigned();
             $table->foreign('category_id')
                   ->references('id')
                   ->on('categories')
-                  ->onDelete('restrict')
-                  ->onUpdate('restrict');
+                  ->onDelete('cascade')
+                  ->onUpdate('cascade');
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')

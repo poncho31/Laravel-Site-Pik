@@ -6,7 +6,7 @@
         }
         .jumbotron{
             text-align: center;
-            background: rgba(55,213,45,0.3);
+            background: rgba(127,0,0,0.5);
             color: white;
         }
         .container{

@@ -23,8 +23,14 @@
             font-weight: bold;
             font-size: 15px;
         }
-        .nav-item:hover, .dropdown:hover{
-            background-color: rgba(255,55,78,0.5)
+        .nav-item:hover, .dropdown li a:hover{
+            color: white;
+            background-color: rgba(127,0,0,0.5);;
+        }
+
+        .navbar-default .navbar-nav > li > a:hover{
+            color: white;
+            background-color: rgba(127,0,0,0.5);;
         }
 
         .navbar-collapse{
@@ -35,8 +41,11 @@
             top:0;
             width: 100%;
         }
+        h3{
+            font-family: Montserrat;
+        }
         footer {
-            background: url('images/background.jpg');
+            background: url('../images/background.jpg');
             background-attachment: fixed;
             background-size: cover;
             background-position: 100;
@@ -79,7 +88,7 @@
         }
 
         body, .jumbotron{
-            background: url('images/background.jpg');
+            background: url('../images/background.jpg');
             background-attachment: fixed;
             background-size: cover;
             background-position: 100;
@@ -154,6 +163,7 @@
                                     <li><a href="{{ route('login') }}">Login</a></li>
                                     <li class="nav-item{{ route('image.create') }}"><a class="nav-link" href="{{ route('image.create') }}">@lang('Ajouter des images')</a></li>
                                     <li class="nav-item{{ route('in-progress.create') }}"><a class="nav-link" href="{{ route('in-progress.create') }}">@lang('Ajouter un article')</a></li>
+                                    <li class="nav-item{{ route('delete') }}"><a class="nav-link" href="{{ route('delete') }}">@lang('Supprimer')</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('logout') }}"
@@ -196,6 +206,10 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    {{-- <script>
+        jQuery("#picture").unitegallery();
+        
+    </script> --}}
     @yield('script')
 </body>
 </html>
