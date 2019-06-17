@@ -41,6 +41,7 @@
 			    -webkit-animation-timing-function: ease;
 			    -webkit-animation-iteration-count: 1;
                 font-family: "Raleway", sans-serif;
+                font-weight: bold;
 			}
 			.header-title h2{
 				text-shadow: 1px 1px 1px black;
@@ -75,9 +76,14 @@
         }
         .image-title{
             /* display: none; */
-            position: absolute;
+            position: relative;
+            font-family: "Raleway", sans-serif;
             color: white;
-            text-shadow: 1px 1px 1px #7F0000;
+            /* font-weight: bolder; */
+            text-shadow: 1px 1px 2px #7F0000, -1px -1px 1px white;
+            background: rgba(127, 0, 0, 0.5);
+            top: 50%;
+            width: 70%;
             /* left:50%; */
             /* border: solid 5px #7F0000; */
             /* top: 0;
@@ -88,10 +94,10 @@
         }
         .row{
             padding: 10px;
-            text-align: center;
+            /* text-align: center; */
             /* height: 50vh; */
         }.row img{
-            max-width: 20vw;
+            /* width: 20vw; */
             padding: 5px;
             background-color: white;
             object-fit: cover;
@@ -108,7 +114,8 @@
 
         .panel-heading h3{
             text-shadow: 2px 2px 2px gray, 1px 1px 1px black;
-            /* color: #7F0000; */
+            /* color: white; */
+            font-weight: bold;
         }
         .panel-default > .panel-heading{
             background-color: whitesmoke;
@@ -117,9 +124,10 @@
 
         .image{
             height: 40vh;
+            margin-bottom: 20px;
         }
         .image img {
-            display: flex;
+            display: block;
             width: 100%;
             max-height: 100%;
             -webkit-filter: grayscale(60%);
@@ -159,7 +167,7 @@
             <div class="panel-body">
                     <div class="row">
                             @foreach($lastCollection as $collection)
-                                <div class="col-md-3 col-sm-3 col-xs-4 image">
+                                <div class="col-md-3 col-sm-3 col-xs-12 image">
                                     <h4 class="image-title">{{ $collection->sectionName }}</h4>
                                     <a href="{{ url("$collection->sectionName/$collection->projectName") }}">
                                         <img src="{{ asset('images/'.$collection->name) }}" alt="" width="100%">
@@ -173,7 +181,7 @@
             <div class="panel-heading"><h3>Last Project</h3></div>
             <div class="row">
                 @foreach($lastProject as $project)
-                        <div class="col-md-3 col-sm-3 col-xs-4 image">
+                        <div class="col-md-3 col-sm-3 col-xs-12 image">
                             <h4 class="image-title">{{ $project->projectName }}</h4>
                             <a href="{{ url("$project->sectionName/$project->projectName") }}">
                                 <img src="{{ asset('images/'.$project->name) }}" alt="" width="100%">
@@ -186,11 +194,9 @@
             <div class="panel-heading"><h3>Latest news on Instagram</h3></div>
             <div class="row">
                 @foreach($instagram as $instaImg)
-                        <div class="col-md-3 col-sm-3 col-xs-4 image">
+                        <div class="col-md-3 col-sm-3 col-xs-12 image">
                             <h4 class="image-title">
-                                    #{{ $instaImg['tags'][0] }} 
-                                    #{{ $instaImg['tags'][1] }} 
-                                    #{{ $instaImg['tags'][2] }}
+                                    #{{ $instaImg['tags'][5] }} 
                             </h4>
                             <a href="{{ $instaImg['link'] }}" target="_blank">
                                 <img src="{{ $instaImg['images']['low_resolution']['url'] }}" alt="" width="100%">

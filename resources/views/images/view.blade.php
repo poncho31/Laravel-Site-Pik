@@ -15,13 +15,22 @@
         -webkit-transition: all 750ms ease;
         transition: all 750ms ease; 
         cursor: pointer;
+        border-radius: 50px;
+        box-shadow: -1px 1px 1px 1px #7F0000, 1px 0px 0px 0px black;
+        -webkit-filter: grayscale(60%);
+        filter: grayscale(60%);
+        -webkit-transition: .3s ease-in-out;
+        transition: .3s ease-in-out;
     }
-    #gallery .image {
-        -webkit-transform: scale(1);
-        -ms-transform: scale(1);
-        transform: scale(1);
+    #gallery .image:hover {
+        -webkit-filter: grayscale(0);
+        filter: grayscale(0);
+        transform:scale(1.01);
     }
 
+    #bar{
+        margin-bottom: 30px;
+    }
     #gallery img{
         /* display: block; */
         max-width: 100%;
@@ -105,10 +114,14 @@
 
     /* Modal Content (Image) */
     .modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
+        margin: auto;
+        display: block;
+        width: auto;
+        /* max-height: 100%; */
+    }
+
+    .modal-content img{
+        max-height: 100%;
     }
 
     /* Caption of Modal Image (Image Text) - Same Width as the Image */

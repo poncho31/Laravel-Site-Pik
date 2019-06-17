@@ -28,9 +28,9 @@ class ImageController extends Controller
      */
     public function index(Request $request, $imageSection, $imageProject) 
     {
-        
         $images = $this->imageRepo->getPaginate(8, $imageSection, $imageProject);
         $categories = $this->imageRepo->getCategoriesByProject($imageProject);
+        // dd($images);
         if($request->ajax()){
             return ['images'=>view('images.ajaxLoad')->with(compact('images', 'imageSection', 'imageProject'))->render(),
             "next-page"=>$images->nextPageUrl()
@@ -54,7 +54,10 @@ class ImageController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   
+        $request = new Request();
+        // dd(phpinfo());
+        // dd($request);
         $group = $this->getAllCategories();
         return view('images.create', ['sections'=>$group['sections'], 'projects'=>$group['projects'], 'categories'=>$group['categories']]);
     }
@@ -70,12 +73,12 @@ class ImageController extends Controller
         $request->validate([
             
             'image' => 'required',
-            'image.*' => 'mimes:jpg,png,jpeg',
-            'description' => 'nullable|string|max:255',
+            'image.*' => '|mimes:jpg,png,jpeg',
+            'description' => 'nullable|string|max:1000',
             ]);
         // dd($request);
         $this->imageRepo->store($request);
-        return back()->with('ok', __("L'image a bien été enregistrée"));
+        return $this->create();
     }
 
     /**

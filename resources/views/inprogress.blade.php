@@ -22,6 +22,10 @@
     }
     .image-content{
         font-family: "Raleway", sans-serif;
+        font-size: 1.2em;
+    }
+    .image-content img{
+        border: double 5px #7F0000;
     }
 
     </style>

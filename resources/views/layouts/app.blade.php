@@ -25,12 +25,12 @@
         }
         .nav-item:hover, .dropdown li a:hover{
             color: white;
-            background-color: rgba(127,0,0,0.5);;
+            background-color: rgba(127,0,0,0.6);;
         }
 
         .navbar-default .navbar-nav > li > a:hover{
             color: white;
-            background-color: rgba(127,0,0,0.5);;
+            background-color: rgba(127,0,0,0.6);;
         }
 
         .navbar-collapse{

@@ -23,6 +23,7 @@ class ImageRepository
 
     public function store($request)
     {
+        // dd(phpinfo());
         $section = $this->ifElse($request->post('section'), $request->post('section_new'));
         $project = $this->ifElse($request->post('project'), $request->post('project_new'));
         $category = $this->ifElse($request->post('category'), $request->post('category_new'));
@@ -98,10 +99,12 @@ class ImageRepository
         $images = $this->getImages();
         if ($type == 'collection') {
             $images->orderBy('sections.updated_at', 'DESC')
+                   ->groupBy('sections.name')
                    ->take($nb);
         }
         else{
             $images->orderBy('projects.updated_at', 'DESC')
+                   ->groupBy('projects.name')
                    ->take($nb);
         }
         return $images->get();

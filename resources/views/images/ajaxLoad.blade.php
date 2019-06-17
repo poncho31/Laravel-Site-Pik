@@ -11,7 +11,8 @@
         <img class="lazyload blur-up image {{ $admin }}" 
              src="{{  url('/thumbs/' .$image->name) }}" 
              data-src="{{  url('/images/' .$image->name) }}"
-             id="{{ $image->id}}" >
+             id="{{ $image->id}}" 
+             data-category="{{ $image->categoryName }}">
     </picture>
 {{-- </a> --}}
 @endforeach
