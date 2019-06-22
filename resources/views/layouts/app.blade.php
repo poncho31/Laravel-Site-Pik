@@ -100,7 +100,8 @@
             margin-top: 0px; */
         }
         .admin:hover{
-            border: solid 5px red;
+            opacity: 0.4;
+            filter: alpha(opacity=40);
             cursor: pointer;
         }
     </style>

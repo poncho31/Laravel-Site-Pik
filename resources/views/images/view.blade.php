@@ -25,7 +25,7 @@
     #gallery .image:hover {
         -webkit-filter: grayscale(0);
         filter: grayscale(0);
-        transform:scale(1.01);
+        /* transform:scale(1.001); */
     }
 
     #bar{
