@@ -11,6 +11,16 @@
         -moz-column-width: 25%;
         column-width: 25%;
     }
+    /* @media (max-width 1000px){
+        #gallery {
+            -webkit-column-count: 2;
+            -moz-column-count: 2;
+            column-count: 2;
+            -webkit-column-width: 25%;
+            -moz-column-width: 25%;
+            column-width: 25%;
+        }
+    } */
     #gallery .image {
         -webkit-transition: all 750ms ease;
         transition: all 750ms ease; 
@@ -60,15 +70,23 @@
 
     @media (max-width: 1000px){
         #gallery {
-            -webkit-column-count: 3;
-            -moz-column-count: 3;
-            column-count: 3;
-            -webkit-column-width: 33%;
-            -moz-column-width: 33%;
-            column-width: 33%;
+            -webkit-column-count: 2;
+            -moz-column-count: 2;
+            column-count: 2;
+            -webkit-column-width: 50%;
+            -moz-column-width: 50%;
+            column-width: 50%;
         }
     }
     @media (max-width: 650px) {
+        #gallery {
+            -webkit-column-count: 1;
+            -moz-column-count: 1;
+            column-count: 1;
+            /* -webkit-column-width: 100%;
+            -moz-column-width: 100%;
+            column-width: 100%; */
+        }
         #gallery img{
             max-width: 100%;
         }
@@ -106,7 +124,7 @@
     left: 0;
     top: 0;
     width: 100%; /* Full width */
-    height: 100%; /* Full height */
+    /* height: 100%;  */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
@@ -140,6 +158,7 @@
     .modal-content, #caption { 
     animation-name: zoom;
     animation-duration: 0.6s;
+    max-height: 100%;
     }
 
     @keyframes zoom {
@@ -167,9 +186,10 @@
 
     /* 100% Image Width on Smaller Screens */
     @media only screen and (max-width: 700px){
-    .modal-content {
-        width: 100%;
-    }
+        .modal-content {
+            /* width: 100%; */
+            /* max-height: 100%; */
+        }
     }
     .navbar{
         margin: 0;
@@ -181,6 +201,15 @@
         background: rgba(127,0,0,0.5);
         color: white;
         text-align: center;
+    }
+    /* .modal-content{transition:all 0.5 ease-in-out;} */
+    .zoom{
+        height: auto;
+        width: 100%;
+        position: absolute;
+        object-fit:cover;
+        max-height: 1000%;
+        
     }
 </style>
 @endsection
@@ -200,8 +229,8 @@
             @endforeach
         </ul>
     </div>
-
-    <div id="gallery" class="images endless-pagination" data-next-page="{{ $images->nextPageUrl() }}">
+    <div id="overlay"></div>
+    <div id="gallery" class="images endless-pagination text-center" data-next-page="{{ $images->nextPageUrl() }}">
         @foreach($images as $image)
                 <picture>
                     <source media = "(min-width:420px)"
@@ -276,8 +305,10 @@
             $('#img01').attr('src', $(this).attr('src'));
             $('#caption').html($(this).attr('alt'));
         });
-        $('.close').on('click', function(){
-            $('#myModal').css('display', 'none');
+        $('.modal').on('click', function(e){
+            if(e.target.id != 'img01'){
+                $('#myModal').css('display', 'none');
+            }
         });
 
 
@@ -310,6 +341,8 @@
         })
     });
 
-
+    $('#img01').on('click', function(){
+        $(this).toggleClass('zoom');
+    });
 </script>
 @endsection

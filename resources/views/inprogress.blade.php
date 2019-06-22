@@ -18,14 +18,24 @@
         font-weight: bold;
         color: #7F0000;
         text-decoration: underline;
-        text-align: center;
+        /* text-align: center; */
     }
     .image-content{
-        font-family: "Raleway", sans-serif;
-        font-size: 1.2em;
+        /* font-family: "Raleway", sans-serif; */
+        /* font-size: 1.2em; */
+        background: rgba(255,255,255,0.3);
+        border-radius: 5px;
+        padding:10px;
+        color: black;
     }
     .image-content img{
         border: double 5px #7F0000;
+        width: auto;
+        height : auto;
+        /* max-height: 100%; */
+        max-width: 30%;
+        object-fit:scale-down;
+        /* display:block; */
     }
 
     </style>
@@ -39,10 +49,12 @@
 <div class="container">
         <div class="row">
             @foreach($articles as $article)
-                <div class="col-md-3 col-sm-4 col-xs-6 {{ $admin }}" style="min-height: 50vh; text-align:justify" id="{{ $article->id }}" >
+                <div class="col-md-6 col-sm-6 col-xs-12 {{ $admin }}" style="min-height: 50vh; text-align:justify" id="{{ $article->id }}" >
                     <h4 class="image-title">{{ $article->name }}</h4>
+                    <p class="pull-right date">{{ $article->updated_at }}</p>
+                    <hr>
                     <p class="image-content">
-                    <img src="{{ asset('images/'.$article->image) }}" alt="" width="50%" style="float:{{ $article->imagePosition}};margin:5px;">
+                        <img src="{{ asset('images/'.$article->image) }}" alt="" width="50%" style="float:{{ $article->imagePosition}};margin:5px;">
                         {{ $article->content }}
                     </p>
                 </div>

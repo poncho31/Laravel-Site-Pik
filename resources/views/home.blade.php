@@ -84,11 +84,14 @@
             background: rgba(127, 0, 0, 0.5);
             top: 50%;
             width: 70%;
+            border: double white 5px;
+            border-bottom: double white 5px;
+            border-right: double white 5px;
             /* left:50%; */
             /* border: solid 5px #7F0000; */
             /* top: 0;
             right: 0; */
-            padding: 5%;
+            padding: 4%;
             z-index: 100;
 
         }
@@ -138,6 +141,8 @@
             border-radius: 50px;
             box-shadow: -1px 1px 1px 1px #7F0000, 1px 0px 0px 0px black;
             /* height: auto; */
+            height: 40vh;
+            object-fit: cover;
         }
         .image img:hover{
             -webkit-filter: grayscale(0);

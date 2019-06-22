@@ -70,6 +70,10 @@
         }
         .footerLinks li {
             display: inline;
+            padding: 3%;
+        }
+        .footerLinks li:hover a{
+            color:white;
         }
         .footerLinks a {
             color: black;
@@ -191,12 +195,13 @@
 
         @yield('content')
         <footer>
-            <div class="footerLinks">
+            <div class="footerLinks" style="position:relative;bottom:0;">
                 <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Legal</a></li>
-                    <li><a href="#">Site Map</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    @foreach($menu as $section => $v)
+                        @foreach($v as $project)
+                            <li class="nav-item"><a class="nav-link" href="{{ url("$section/$project") }}">{{ ucfirst(trans($project)) }}</a></li>
+                        @endforeach
+                    @endforeach
                 </ul>
             </div>
             <div class="copyright">

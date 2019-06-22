@@ -56,7 +56,7 @@
         
         
                 <div class="form-group">
-                    <button class="btn btn-success float-right">Contact me</button>
+                    <button class="btn btn-danger float-right">Contact me</button>
                 </div>
             {!! Form::close() !!}
     </div>
