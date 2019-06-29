@@ -28,15 +28,13 @@ class ImageController extends Controller
      */
     public function index(Request $request, $imageSection, $imageProject) 
     {
-        $images = $this->imageRepo->getPaginate(8, $imageSection, $imageProject);
+        $images = $this->imageRepo->getPaginate(25, $imageSection, $imageProject);
         $categories = $this->imageRepo->getCategoriesByProject($imageProject);
-        // dd($images);
         if($request->ajax()){
             return ['images'=>view('images.ajaxLoad')->with(compact('images', 'imageSection', 'imageProject'))->render(),
             "next-page"=>$images->nextPageUrl()
             ];
         }
-        // dd($images);
         return view('images.view', compact('images', 'imageSection', 'imageProject', 'categories'));
     }
 

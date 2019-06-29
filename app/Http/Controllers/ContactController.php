@@ -29,7 +29,7 @@ class ContactController extends Controller
         $contact->save();
 
         //Send mail
-        Mail::to('gilles.pinchart@gmail.com')->send(new contactMail($contact));
+        Mail::to('pikpinchart@gmail.com')->send(new contactMail($contact));
 
         Session::flash('message', 'Mail send'); 
         Session::flash('alert-class', 'alert-success'); 

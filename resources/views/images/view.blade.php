@@ -4,12 +4,12 @@
 @section('stylesheet')
 <style>
     #gallery {
-        -webkit-column-count: 4;
+        /* -webkit-column-count: 4;
         -moz-column-count: 4;
         column-count: 4;
         -webkit-column-width: 25%;
         -moz-column-width: 25%;
-        column-width: 25%;
+        column-width: 25%; */
     }
     /* @media (max-width 1000px){
         #gallery {
@@ -25,12 +25,13 @@
         -webkit-transition: all 750ms ease;
         transition: all 750ms ease; 
         cursor: pointer;
-        border-radius: 50px;
+        border-radius: 10px;
         box-shadow: -1px 1px 1px 1px #7F0000, 1px 0px 0px 0px black;
         -webkit-filter: grayscale(60%);
         filter: grayscale(60%);
         -webkit-transition: .3s ease-in-out;
         transition: .3s ease-in-out;
+        margin: 10px;
     }
     #gallery .image:hover {
         -webkit-filter: grayscale(0);
@@ -195,7 +196,8 @@
         margin: 0;
     }
     .title h2{
-        text-align: center;
+        font-weight:900;
+        text-transform: uppercase;
     }
     .jumbotron{
         background: rgba(127,0,0,0.5);
@@ -211,52 +213,52 @@
         max-height: 1000%;
         
     }
+    .btn{
+        font-weight: bold;
+        background-color: #7F0000;
+        color: white;
+    }
+    .btn:hover, .btn:focus{color: white;}
 </style>
 @endsection
 
 @section('content')
 <div class="jumbotron title">
         <h2 class="display-4">{{ ucfirst(trans($imageSection)) }} &#8212; {{ ucfirst(trans($imageProject)) }}</h2>
-        {{-- <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>  --}}
 </div>
 <div class="container">
-
     <div class="category">
         <ul id="bar">
-            <button class="btn btn-primary btn-category" value='all'>ALL</button>
+            <button class="btn btn-category" value='all'>ALL</button>
             @foreach($categories as $category)
-                <button class="btn btn-primary btn-category"  value="{{$category->name}}">{{$category->name}}</button>
+                <button class="btn btn-category"  value="{{$category->name}}">{{$category->name}}</button>
             @endforeach
         </ul>
     </div>
-    <div id="overlay"></div>
-    <div id="gallery" class="images endless-pagination text-center" data-next-page="{{ $images->nextPageUrl() }}">
+
+    <div id="gallery" class="row images endless-pagination text-center" data-next-page="{{ $images->nextPageUrl() }}">
         @foreach($images as $image)
-                <picture>
-                    <source media = "(min-width:420px)"
-                            data-srcset="{{  url('/images/' .$image->name) }}">
-                    <source media = "(max-width:420px)"
-                            data-srcset = "{{  url('/thumbs/' .$image->name) }}" >
-                    <img class="lazyload blur-up image {{ $admin }}" 
-                         src="{{  url('/thumbs/' .$image->name) }}" 
-                         data-src="{{  url('/images/' .$image->name) }}"
-                         id="{{ $image->id}}"
-                         data-category="{{ $image->categoryName }}">
-                </picture>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            {{-- <picture> --}}
+                {{-- <source media = "(min-width:420px)"
+                        data-srcset="{{  url('/images/' .$image->name) }}">
+                <source media = "(max-width:420px)"
+                        data-srcset = "{{  url('/thumbs/' .$image->name) }}" > --}}
+                <img class="lazyload blur-up image {{ $admin }}" 
+                     src="{{  url('/thumbs/' .$image->name) }}" 
+                     data-src="{{  url('/images/' .$image->name) }}"
+                     id="{{ $image->id}}"
+                     data-category="{{ $image->categoryName }}">
+            {{-- </picture> --}}
+        </div>
         @endforeach
     </div>
 </div>
 
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-        <!-- The Close Button -->
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
         <span class="close">&times;</span>
-      
-        <!-- Modal Content (The Image) -->
         <img class="modal-content" id="img01">
-      
-        <!-- Modal Caption (Image Text) -->
         <div id="caption"></div>
       </div>
 @endsection

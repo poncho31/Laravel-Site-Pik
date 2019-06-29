@@ -114,12 +114,18 @@ class ImageRepository
         $access_token="3190094976.1677ed0.093161ccf1974ae692d20f23a82e2135";
         $json_link="https://api.instagram.com/v1/users/self/media/recent/?";
         $json_link.="access_token={$access_token}&count={$nb}";
-        $json = file_get_contents($json_link);
-        $obj = json_decode($json, true, 512, JSON_BIGINT_AS_STRING);
-        $json = file_get_contents($json_link);
-        $obj = json_decode(preg_replace('/("\w+"):(\d+)/', '\\1:"\\2"', $json), true);
-        return $obj['data'];
+        if ($this->is_connected()) {
+            $json = file_get_contents($json_link);
+            $obj = json_decode($json, true, 512, JSON_BIGINT_AS_STRING);
+            $json = file_get_contents($json_link);
+            $obj = json_decode(preg_replace('/("\w+"):(\d+)/', '\\1:"\\2"', $json), true);
+            return $obj['data'];
+        }
+        else{
+            return 404;
+        }
     }
+    
     public function getCategoriesByProject($project){
         return DB::table('categories')
                     ->join('images','categories.id','=','images.category_id')
@@ -143,12 +149,6 @@ class ImageRepository
             $menu[$val->sectionName][] = $val->projectName;
         }
         return $menu;
-        // dd($data);
-        // dd($menu);
-                // SELECT DISTINCT s.name as sectionName, GROUP_CONCAT(DISTINCT p.name SEPARATOR '/') as projectName FROM images i
-                // INNER JOIN sections s ON s.id = i.section_id
-                // INNER JOIN projects p ON p.id = i.project_id
-                // GROUP BY sectionName
     }
 
     // public function globalDelete(Request $request){
@@ -192,6 +192,20 @@ class ImageRepository
     public function deleteAll(){
         
         // $categoryRepo->findOrFail($id)->delete();
+    }
+
+    function is_connected()
+    {
+        $connected = @fsockopen("www.instagram.com", 80); 
+                                            //website, port  (try 80 or 443)
+        if ($connected){
+            $is_conn = true; //action when connected
+            fclose($connected);
+        }else{
+            $is_conn = false; //action in connection failure
+        }
+        return $is_conn;
+    
     }
 
 }

@@ -6,19 +6,20 @@
     .navbar{
         margin:0;
     }
-    .title h2{
-        text-align: center;
-    }
+
     .jumbotron{
         background: rgba(127,0,0,0.5);
         color: white;
         text-align: center;
     }
+    .title h2{
+        font-weight:900;
+        text-transform: uppercase;
+    }
     .image-title{
         font-weight: bold;
         color: #7F0000;
-        text-decoration: underline;
-        /* text-align: center; */
+        text-align: center;
     }
     .image-content{
         /* font-family: "Raleway", sans-serif; */
@@ -28,6 +29,17 @@
         padding:10px;
         color: black;
     }
+
+    @font-face {
+        font-family: "oswald";
+        src: url("/fonts/oswald.light.ttf") format("ttf");
+    }
+
+    p{
+        font-size: 1.1em;
+        color: #444;
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    }
     .image-content img{
         border: double 5px #7F0000;
         width: auto;
@@ -36,6 +48,20 @@
         max-width: 30%;
         object-fit:scale-down;
         /* display:block; */
+    }
+    .date{
+        color: white;
+        padding: 1%;
+        font-size: 1em;
+    }
+    .label-default{
+        background-color: #7F0000;
+    }
+    .container hr {
+        height: 2px;
+        color: #7F0000;
+        background-color: #7F0000;
+        width: 70%;
     }
 
     </style>
@@ -48,13 +74,18 @@
 </div>
 <div class="container">
         <div class="row">
+            @if(!isset($articles[0]))
+            <div class="text-center">
+                <p class="label label-danger">No articles for the moment</p>
+            </div>
+            @endif
             @foreach($articles as $article)
                 <div class="col-md-6 col-sm-6 col-xs-12 {{ $admin }}" style="min-height: 50vh; text-align:justify" id="{{ $article->id }}" >
-                    <h4 class="image-title">{{ $article->name }}</h4>
-                    <p class="pull-right date">{{ $article->updated_at }}</p>
+                    <h3 class="image-title">{{ $article->name }}</h3>
+                    <p class="pull-right date label label-default">{{ strftime("%A %d %B %G", strtotime($article->updated_at)) }}</p>
                     <hr>
                     <p class="image-content">
-                        <img src="{{ asset('images/'.$article->image) }}" alt="" width="50%" style="float:{{ $article->imagePosition}};margin:5px;">
+                        <img src="{{ asset('images/'.$article->image) }}" alt="" style="float:{{ $article->imagePosition}};margin:10px">
                         {{ $article->content }}
                     </p>
                 </div>

@@ -64,31 +64,26 @@
         text-align: center;
         }
         .footerLinks ul {
-            padding: 0;
-            list-style-type: none;
-            margin: 0;
+            list-style-type:circle;
+            list-style: square;
         }
         .footerLinks li {
-            display: inline;
+            display: inline-flex;
             padding: 3%;
+            /* margin: 3%; */
         }
         .footerLinks li:hover a{
             color:white;
         }
         .footerLinks a {
-            color: black;
+            color: #444;
             font-weight: bold;
             text-decoration: none;
-            font-size: 13px;
+            /* font-size: 13px; */
+            text-transform: uppercase;
         }
         .copyright {
             text-align: center;
-        }
-
-        .copyright p {
-            margin: 0;
-            color: #b3b3b3;
-            font-size: 11px;
         }
 
         body, .jumbotron{
@@ -100,13 +95,18 @@
             -webkit-animation-duration: 1s;
             -webkit-animation-timing-function: ease;
             -webkit-animation-iteration-count: 1;
-            /* padding-top:0px;
-            margin-top: 0px; */
         }
         .admin:hover{
-            opacity: 0.4;
+            opacity: 0.7;
             filter: alpha(opacity=40);
             cursor: pointer;
+        }
+
+        hr {
+            height: 2px;
+            opacity: 0.7;
+            color: #7F0000;
+            background-color: #7F0000;
         }
     </style>
     @yield('stylesheet');
@@ -194,28 +194,24 @@
         @endif
 
         @yield('content')
+        <hr>
         <footer>
             <div class="footerLinks" style="position:relative;bottom:0;">
                 <ul>
                     @foreach($menu as $section => $v)
                         @foreach($v as $project)
-                            <li class="nav-item"><a class="nav-link" href="{{ url("$section/$project") }}">{{ ucfirst(trans($project)) }}</a></li>
+                        <a class="nav-link" href="{{ url("$section/$project") }}">
+                            <li class="nav-item">{{ ucfirst(trans($project)) }}</li>
+                        </a>
                         @endforeach
                     @endforeach
                 </ul>
-            </div>
-            <div class="copyright">
-                <p>Copyright 2016</p>
             </div>
         </footer>
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    {{-- <script>
-        jQuery("#picture").unitegallery();
-        
-    </script> --}}
     @yield('script')
 </body>
 </html>

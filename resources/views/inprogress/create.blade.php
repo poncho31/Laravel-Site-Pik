@@ -22,11 +22,13 @@
     <div class="container" style="text-align:center">
             <form method="POST" action="{{ route('in-progress.store') }}" enctype="multipart/form-data">
                 {{ csrf_field() }}
-                <div class="row{{ $errors->has('image') ? ' is-invalid' : '' }}">        
+                <div class="row{{ $errors->has('image') ? ' is-invalid' : '' }}"> 
+                    {{-- TITRE ARTICLE --}}
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <label for="title">@lang('title')</label>
                         <input type="text" name="title" id="title" class="form-control" placeholder="new title">
-                    </div>                    
+                    </div>
+                    {{-- CONTENU ARTICLE --}}
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <label for="article">@lang('article')</label>
                         <textarea class="form-control" id="article" name="article" rows="7"></textarea>
@@ -70,7 +72,7 @@
                     {{-- <div class="form-control-file"></div> --}}
                 
             </form>
-    </div>
+    </div><br><br>
 @endsection
 
 @section('script')

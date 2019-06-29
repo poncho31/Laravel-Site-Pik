@@ -9,9 +9,18 @@
             background: rgba(127,0,0,0.5);
             color: white;
         }
+        .title h2{
+            font-weight:900;
+            text-transform: uppercase;
+        }
         .container{
             padding: 10%;
             padding-top: 0;
+        }
+        .btn{
+            background-color: rgb(127,0,0);
+            color: white;
+            font-weight: bold;
         }
     </style>
 @endsection
@@ -42,8 +51,8 @@
         
                 {{-- OBJECT --}}
                 <div class="form-group {{ $errors->has('object') ? 'has-error' : '' }}">
-                    {!! Form::label('Object:') !!}
-                    {!! Form::text('object', old('object'), ['class'=>'form-control', 'placeholder'=>'Enter Object']) !!}
+                    {!! Form::label('Subject:') !!}
+                    {!! Form::text('object', old('object'), ['class'=>'form-control', 'placeholder'=>'Enter subject']) !!}
                     <span class="text-danger">{{ $errors->first('object') }}</span>
                 </div>
 
@@ -56,7 +65,7 @@
         
         
                 <div class="form-group">
-                    <button class="btn btn-danger float-right">Contact me</button>
+                    <button class="btn float-right">Contact me</button>
                 </div>
             {!! Form::close() !!}
     </div>

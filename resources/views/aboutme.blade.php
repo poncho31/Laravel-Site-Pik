@@ -4,13 +4,14 @@
         .navbar{
             margin:0;
         }
-        .title h2{
-            text-align: center;
-        }
         .jumbotron{
             background: rgba(127,0,0,0.5);
             color: white;
             text-align: center;
+        }
+        .title h2{
+            font-weight:900;
+            text-transform: uppercase;
         }
     </style>
 @endsection
@@ -19,8 +20,8 @@
     <div class="jumbotron title">
             <h2 class="display-4">About me</h2>
     </div>
-    <div class="container" style="text-align:center">
-            <iframe src="{{  url('/images/cv.pdf') }}" width="80%" style="height:200vh"></iframe>
+    <div class="" style="text-align:center">
+            <iframe src="{{  url('/images/cv.pdf') }}" width="100%" style="height:160vh;"></iframe>
     </div>
 @endsection
 

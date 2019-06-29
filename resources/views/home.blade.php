@@ -82,11 +82,10 @@
             /* font-weight: bolder; */
             text-shadow: 1px 1px 2px #7F0000, -1px -1px 1px white;
             background: rgba(127, 0, 0, 0.5);
-            top: 50%;
+            top: 103%;
+            left:29%;
             width: 70%;
             border: double white 5px;
-            border-bottom: double white 5px;
-            border-right: double white 5px;
             /* left:50%; */
             /* border: solid 5px #7F0000; */
             /* top: 0;
@@ -116,7 +115,7 @@
         }
 
         .panel-heading h3{
-            text-shadow: 2px 2px 2px gray, 1px 1px 1px black;
+            /* text-shadow: 2px 2px 2px gray, 1px 1px 1px black; */
             /* color: white; */
             font-weight: bold;
         }
@@ -138,7 +137,7 @@
             -webkit-transition: .3s ease-in-out;
             transition: .3s ease-in-out;
             z-index: 0;
-            border-radius: 50px;
+            border-radius: 10px;
             box-shadow: -1px 1px 1px 1px #7F0000, 1px 0px 0px 0px black;
             /* height: auto; */
             height: 40vh;
@@ -168,12 +167,12 @@
 <div class="container home-menu">
     <div class="panel panel-default">
         
-            <div class="panel-heading"><h3>Last Collection</h3></div>
+            <div class="panel-heading text-center"><h3>Last Collections</h3></div>
             <div class="panel-body">
                     <div class="row">
                             @foreach($lastCollection as $collection)
                                 <div class="col-md-3 col-sm-3 col-xs-12 image">
-                                    <h4 class="image-title">{{ $collection->sectionName }}</h4>
+                                    <h4 class="image-title">{{ ucfirst($collection->sectionName) }}</h4>
                                     <a href="{{ url("$collection->sectionName/$collection->projectName") }}">
                                         <img src="{{ asset('images/'.$collection->name) }}" alt="" width="100%">
                                     </a>
@@ -183,11 +182,11 @@
             </div>
     </div>
     <div class="panel panel-default">        
-            <div class="panel-heading"><h3>Last Project</h3></div>
+            <div class="panel-heading text-center"><h3>Last Projects</h3></div>
             <div class="row">
                 @foreach($lastProject as $project)
                         <div class="col-md-3 col-sm-3 col-xs-12 image">
-                            <h4 class="image-title">{{ $project->projectName }}</h4>
+                            <h4 class="image-title">{{ ucfirst($project->projectName) }}</h4>
                             <a href="{{ url("$project->sectionName/$project->projectName") }}">
                                 <img src="{{ asset('images/'.$project->name) }}" alt="" width="100%">
                             </a>
@@ -196,18 +195,26 @@
             </div><br>
     </div>
     <div class="panel panel-default">  
-            <div class="panel-heading"><h3>Latest news on Instagram</h3></div>
+            <div class="panel-heading text-center"><h3>Latest news on Instagram</h3></div>
             <div class="row">
-                @foreach($instagram as $instaImg)
-                        <div class="col-md-3 col-sm-3 col-xs-12 image">
-                            <h4 class="image-title">
-                                    #{{ $instaImg['tags'][5] }} 
-                            </h4>
-                            <a href="{{ $instaImg['link'] }}" target="_blank">
-                                <img src="{{ $instaImg['images']['low_resolution']['url'] }}" alt="" width="100%">
-                            </a>
-                        </div>
-                @endforeach
+                @if($instagram != 404)
+                    @foreach($instagram as $instaImg)
+                            <div class="col-md-3 col-sm-3 col-xs-12 image">
+                                <h4 class="image-title">
+                                        #{{ ucfirst($instaImg['tags'][2]) }} 
+                                </h4>
+                                <a href="{{ $instaImg['link'] }}" target="_blank">
+                                    <img src="{{ $instaImg['images']['low_resolution']['url'] }}" alt="" width="100%">
+                                </a>
+                            </div>
+                    @endforeach
+                @else
+                    <div class="col-md-3 col-sm-3 col-xs-12 image text-center">
+                        <p class="label label-default">
+                            Pas de connexion internet
+                        </p>       
+                    </div>
+                @endif
             </div><br>
         </div>
         </div>
