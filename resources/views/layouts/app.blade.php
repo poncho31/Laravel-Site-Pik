@@ -172,10 +172,10 @@
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}</span> <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ route('login') }}">Login</a></li>
                                     <li class="nav-item{{ route('image.create') }}"><a class="nav-link" href="{{ route('image.create') }}">@lang('Ajouter des images')</a></li>
                                     <li class="nav-item{{ route('in-progress.create') }}"><a class="nav-link" href="{{ route('in-progress.create') }}">@lang('Ajouter un article')</a></li>
                                     <li class="nav-item{{ route('delete') }}"><a class="nav-link" href="{{ route('delete') }}">@lang('Supprimer')</a></li>
+                                    <li class="nav-item{{ route('mails-receive') }}"><a class="nav-link" href="{{ route('mails-receive') }}">@lang('Mails reçu')</a></li>
                                     <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('logout') }}"
@@ -194,7 +194,7 @@
                 </div>
             </div>
         </nav>
-        <div class="fixedNavbar" style="height:50px; position:absolute; top:0"></div>
+        <div class="fixedNavbar" style="height:50px; position:relative; top:0"></div>
         
         @if(Session::has('message'))
             <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>

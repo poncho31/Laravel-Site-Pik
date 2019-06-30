@@ -25,6 +25,7 @@
     
     // Static menu
     Route::get('in-progress', 'InprogressController@index');
+    Route::get('mails-receive', 'ContactController@mailsReceive')->name('mails-receive');
     Route::get('contact', 'ContactController@index')->name('contact');
     Route::post('contact', 'ContactController@store')->name('contact');
     Route::get('about-me', 'HomeController@aboutMe');
