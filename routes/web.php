@@ -21,12 +21,13 @@
         Route::post('delete', 'ImageController@globalDelete')->name('delete');
     });
     
-    Route::get('/', 'homeController@index');
+    Route::get('/', 'HomeController@index');
+    
     // Static menu
     Route::get('in-progress', 'InprogressController@index');
     Route::get('contact', 'ContactController@index')->name('contact');
     Route::post('contact', 'ContactController@store')->name('contact');
-    Route::get('about-me', 'homeController@aboutMe');
+    Route::get('about-me', 'HomeController@aboutMe');
     
     // Dynamic menu
     Route::get('{imagesSection}/{imagesProject}', 'ImageController@index');

@@ -45,14 +45,6 @@
             font-family: Montserrat;
         }
         footer {
-            background: url('../images/background.jpg');
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: 100;
-            -webkit-animation-name: backgrAnim;
-            -webkit-animation-duration: 1s;
-            -webkit-animation-timing-function: ease;
-            -webkit-animation-iteration-count: 1;
             text-align: center;
             font-family: arial;
             margin-bottom: 0;
@@ -87,10 +79,10 @@
         }
 
         body, .jumbotron{
-            background: url('../images/background.jpg');
+            background: url('../images/background.jpg') no-repeat center center;
             background-attachment: fixed;
             background-size: cover;
-            background-position: 100;
+            /* background-position: 0; */
             -webkit-animation-name: backgrAnim;
             -webkit-animation-duration: 1s;
             -webkit-animation-timing-function: ease;
@@ -107,6 +99,21 @@
             opacity: 0.7;
             color: #7F0000;
             background-color: #7F0000;
+        }
+        body:before, .jumbotron:before, .HEADER:before, .panel:before, footer:before{
+        content: "";
+        display: block;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -10;
+        background: url('../images/background.jpg') no-repeat center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
         }
     </style>
     @yield('stylesheet');
@@ -187,7 +194,7 @@
                 </div>
             </div>
         </nav>
-        <div class="fixedNavbar" style="height:50px;"></div>
+        <div class="fixedNavbar" style="height:50px; position:absolute; top:0"></div>
         
         @if(Session::has('message'))
             <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>

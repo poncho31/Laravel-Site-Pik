@@ -4,7 +4,7 @@ namespace App\Repositories;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as InterventionImage;
 use Illuminate\Support\Facades\DB;
-use App\Image;
+use App\image;
 use App\section;
 use App\project;
 use App\category;
@@ -47,7 +47,6 @@ class ImageRepository
             $this->category->save();
             $category = $this->category->id;
         }
-
 
         $sectionName = DB::table('sections')->where('id', $section)->pluck('name')->first();
         $projectName = DB::table('projects')->where('id', $project)->pluck('name')->first();

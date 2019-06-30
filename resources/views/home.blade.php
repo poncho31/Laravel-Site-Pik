@@ -9,14 +9,6 @@
         header.HEADER{
             height: 95vh;
             width: 100%;
-            background: url('images/background.jpg');
-            background-size: cover;
-            background-position: 100;
-            -webkit-animation-name: backgrAnim;
-            -webkit-animation-duration: 1s;
-            -webkit-animation-timing-function: ease;
-            -webkit-animation-iteration-count: 1;
-            width: 100%;
             display: block;
             min-height: 80vh;
             position: absolute;
@@ -96,9 +88,14 @@
         }
         .row{
             padding: 10px;
+            
             /* text-align: center; */
             /* height: 50vh; */
-        }.row img{
+        }
+        .panel-default{
+            background-color: transparent;
+        }
+        .row img{
             /* width: 20vw; */
             padding: 5px;
             background-color: white;
@@ -107,10 +104,6 @@
             /* max-height: 40vh; */
         }
         .panel{
-            background: url('images/background.jpg');
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: 100;
             border-color: transparent;
         }
 
