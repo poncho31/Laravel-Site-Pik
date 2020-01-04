@@ -136,6 +136,12 @@
             height: 40vh;
             object-fit: cover;
         }
+        @media screen and (max-width: 600px){
+            .image img{
+                -webkit-filter: grayscale(0%);
+                filter: grayscale(0%);
+            }
+        }
         .image img:hover{
             -webkit-filter: grayscale(0);
             filter: grayscale(0);

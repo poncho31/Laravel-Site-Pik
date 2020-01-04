@@ -38,7 +38,12 @@
         filter: grayscale(0);
         /* transform:scale(1.001); */
     }
-
+    @media screen and (max-width: 600px){
+            #gallery .image{
+                -webkit-filter: grayscale(0%);
+                filter: grayscale(0%);
+            }
+        }
     #bar{
         margin-bottom: 30px;
     }
