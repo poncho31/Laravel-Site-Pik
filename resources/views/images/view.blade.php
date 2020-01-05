@@ -243,19 +243,27 @@
 
     <div id="gallery" class="row images endless-pagination text-center" data-next-page="{{ $images->nextPageUrl() }}">
         @foreach($images as $image)
-        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-            {{-- <picture> --}}
-                {{-- <source media = "(min-width:420px)"
-                        data-srcset="{{  url('/images/' .$image->name) }}">
-                <source media = "(max-width:420px)"
-                        data-srcset = "{{  url('/thumbs/' .$image->name) }}" > --}}
-                <img class="lazyload blur-up image {{ $admin }}" 
-                     src="{{  url('/thumbs/' .$image->name) }}" 
-                     data-src="{{  url('/images/' .$image->name) }}"
-                     id="{{ $image->id}}"
-                     data-category="{{ $image->categoryName }}">
-            {{-- </picture> --}}
-        </div>
+            @if(pathinfo($image->name,PATHINFO_EXTENSION) == 'pdf')
+                <a href="{{ url('/images/'.$image->name) }}"></a> 
+                <embed src="{{ url('/images/'.$image->name) }}" 
+                    style="width:100%;height:100vh;"
+                    >
+            @else
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                {{-- <picture> --}}
+                    {{-- <source media = "(min-width:420px)"
+                            data-srcset="{{  url('/images/' .$image->name) }}">
+                    <source media = "(max-width:420px)"
+                            data-srcset = "{{  url('/thumbs/' .$image->name) }}" > --}}
+
+                    <img class="lazyload blur-up image {{ $admin }}" 
+                        src="{{  url('/thumbs/' .$image->name) }}" 
+                        data-src="{{  url('/images/' .$image->name) }}"
+                        id="{{ $image->id}}"
+                        data-category="{{ $image->categoryName }}">
+                        {{-- </picture> --}}
+                </div>
+            @endif
         @endforeach
     </div>
 </div>

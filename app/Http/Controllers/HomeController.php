@@ -31,8 +31,11 @@ class HomeController extends Controller
         $lastProject = $this->imageRepo->getHomeLatest('project', 4);
         $lastCollection = $this->imageRepo->getHomeLatest('collection', 4);
         $instagram= $this->imageRepo->getInstagramPosts(4);
-        // dd($instagram);
-        return view('home', compact('lastProject', 'lastCollection', 'instagram'));
+        
+        return view('home', compact('lastProject', 
+                                    'lastCollection', 
+                                    'instagram'
+                                ));
     }
 
     public function aboutMe()

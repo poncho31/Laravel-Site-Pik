@@ -32,6 +32,7 @@
     
     // Dynamic menu
     Route::get('{imagesSection}/{imagesProject}', 'ImageController@index');
+    Route::get('pdf/{pdfname}', 'ImageController@viewPDF');
 
 
     

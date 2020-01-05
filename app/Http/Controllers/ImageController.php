@@ -71,7 +71,7 @@ class ImageController extends Controller
         $request->validate([
             
             'image' => 'required',
-            'image.*' => '|mimes:jpg,png,jpeg',
+            // 'image.*' => '|mimes:jpg,png,jpeg,pdf',
             'description' => 'nullable|string|max:1000',
             ]);
         // dd($request);
@@ -146,5 +146,9 @@ class ImageController extends Controller
         }
 
         return $this->globalDeleteView();
+    }
+
+    public function viewPDF($filename){
+        return response()->file(public_path("files\pdf\\$filename"));
     }
 }

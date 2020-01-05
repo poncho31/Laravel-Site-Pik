@@ -52,11 +52,15 @@ class ImageRepository
         $projectName = DB::table('projects')->where('id', $project)->pluck('name')->first();
 
         foreach ($request->file('image') as $imageFile) {
+            
             // Save image
+            // dd(phpinfo());
             $path = Storage::disk('images')->put("/$sectionName/$projectName", $imageFile);
             // Save thumb
-            $image = InterventionImage::make($imageFile)->widen(500);
-            Storage::disk('thumbs')->put($path, $image->encode());
+            if($imageFile->getClientOriginalExtension() != "pdf"){
+                $image = InterventionImage::make($imageFile)->widen(500);
+                Storage::disk('thumbs')->put($path, $image->encode());
+            }
             // Save in base
             $this->image = new Image();
             $this->image->description = $request->description;

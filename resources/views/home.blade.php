@@ -173,7 +173,7 @@
                                 <div class="col-md-3 col-sm-3 col-xs-12 image">
                                     <h4 class="image-title">{{ ucfirst($collection->sectionName) }}</h4>
                                     <a href="{{ url("$collection->sectionName/$collection->projectName") }}">
-                                        <img src="{{ asset('images/'.$collection->name) }}" alt="" width="100%">
+                                        <img src="{{ (pathinfo($collection->name, PATHINFO_EXTENSION) == 'pdf')?asset('files/images/portfolio.jpeg'):asset('images/'.$collection->name) }}" alt="" width="100%">
                                     </a>
                                 </div>
                             @endforeach
@@ -187,7 +187,7 @@
                         <div class="col-md-3 col-sm-3 col-xs-12 image">
                             <h4 class="image-title">{{ ucfirst($project->projectName) }}</h4>
                             <a href="{{ url("$project->sectionName/$project->projectName") }}">
-                                <img src="{{ asset('images/'.$project->name) }}" alt="" width="100%">
+                                <img src="{{ (pathinfo($project->name, PATHINFO_EXTENSION) == 'pdf')?asset('files/images/portfolio.jpeg'):asset('images/'.$project->name) }}" alt="" width="100%">
                             </a>
                         </div>
                 @endforeach
@@ -220,6 +220,7 @@
     </div>
 
 </div>
+
 @endsection
 
 @section('script')
