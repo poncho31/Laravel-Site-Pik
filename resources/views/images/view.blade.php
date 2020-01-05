@@ -245,9 +245,9 @@
         @foreach($images as $image)
             @if(pathinfo($image->name,PATHINFO_EXTENSION) == 'pdf')
                 <a href="{{ url('/images/'.$image->name) }}"></a> 
-                <embed src="{{ url('/images/'.$image->name) }}" 
+                <iframe src="{{ url('/images/'.$image->name) }}" 
                     style="width:100%;height:100vh;"
-                    >
+                    ></iframe>
             @else
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                 {{-- <picture> --}}
