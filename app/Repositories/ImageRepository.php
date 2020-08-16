@@ -118,11 +118,12 @@ class ImageRepository
         $json_link="https://api.instagram.com/v1/users/self/media/recent/?";
         $json_link.="access_token={$access_token}&count={$nb}";
         if ($this->is_connected()) {
-            $json = file_get_contents($json_link);
-            $obj = json_decode($json, true, 512, JSON_BIGINT_AS_STRING);
-            $json = file_get_contents($json_link);
-            $obj = json_decode(preg_replace('/("\w+"):(\d+)/', '\\1:"\\2"', $json), true);
-            return $obj['data'];
+            // $json = file_get_contents($json_link);
+            // $obj = json_decode($json, true, 512, JSON_BIGINT_AS_STRING);
+            // $json = file_get_contents($json_link);
+            // $obj = json_decode(preg_replace('/("\w+"):(\d+)/', '\\1:"\\2"', $json), true);
+            // return $obj['data'];
+            return 404;
         }
         else{
             return 404;
